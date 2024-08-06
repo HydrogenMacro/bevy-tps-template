@@ -2,6 +2,7 @@ use bevy::color::palettes::tailwind::*;
 use bevy::prelude::*;
 use sickle_ui::prelude::*;
 use crate::scene_state::SceneState;
+use crate::ui::button::UiTextButtonExt;
 
 #[derive(Component)]
 pub struct StartButton;
@@ -19,15 +20,7 @@ fn init_load_screen(mut commands: Commands) {
 				color: Color::srgb(0.5, 0.2, 0.3),
 				..default()
 			}).style().font_size(90.);
-		column.container(ButtonBundle {
-			background_color: RED_500.into(),
-			..default()
-		}, |button| {
-			button.label(LabelConfig {
-				label: "Play".into(),
-				..default()
-			});
-		}).insert(StartButton);
+		column.text_btn("abc").insert(StartButton);
 	});
 	ui.insert(StateScoped(SceneState::Loading));
 	ui.style().width(Val::Vw(100.)).align_items(AlignItems::Center).justify_content(JustifyContent::Center);
