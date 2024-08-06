@@ -1,0 +1,8 @@
+[package]
+name = "bevy-tps-template"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = "0.14.1"
+sickle_ui = "0.2.1"
