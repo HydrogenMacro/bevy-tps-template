@@ -1,4 +1,2 @@
-mod loading_screen;
-mod main_menu;
-
-pub use loading_screen::*;
+pub mod loading_screen;
+pub mod main_menu;

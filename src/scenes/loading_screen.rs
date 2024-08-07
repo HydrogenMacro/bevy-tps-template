@@ -1,5 +1,6 @@
 use bevy::color::palettes::tailwind::*;
 use bevy::prelude::*;
+use bevy::reflect::array_apply;
 use sickle_ui::prelude::*;
 use crate::scene_state::SceneState;
 use crate::ui::button::UiTextButtonExt;
@@ -8,7 +9,7 @@ use crate::ui::button::UiTextButtonExt;
 pub struct StartButton;
 pub fn loading_screen_plugin(app: &mut App) {
 	app
-		.add_systems(Startup, init_load_screen.run_if(in_state(SceneState::Loading)))
+		.add_systems(OnEnter(SceneState::Loading), init_load_screen)
 		.add_systems(Update, update_ui.run_if(in_state(SceneState::Loading)));
 }
 fn init_load_screen(mut commands: Commands) {
@@ -20,7 +21,9 @@ fn init_load_screen(mut commands: Commands) {
 				color: Color::srgb(0.5, 0.2, 0.3),
 				..default()
 			}).style().font_size(90.);
-		column.text_btn("abc").insert(StartButton);
+		let mut play_btn = column.text_btn("Play");
+		play_btn.style().padding(UiRect::all(Val::VMin(1.)));
+		play_btn.insert(StartButton);
 	});
 	ui.insert(StateScoped(SceneState::Loading));
 	ui.style().width(Val::Vw(100.)).align_items(AlignItems::Center).justify_content(JustifyContent::Center);
