@@ -3,24 +3,21 @@ use bevy::ecs::system::SystemId;
 use bevy::prelude::*;
 use sickle_ui::prelude::*;
 
-pub fn text_btn_system(app: &mut App) {
+pub fn text_btn_plugin(app: &mut App) {
 	app
 		.add_systems(Update, update_text_btn_interaction);
 }
 
-#[derive(Component, PartialEq, Eq)]
+#[derive(Component, PartialEq, Eq, Debug)]
 pub enum ClickMode {
 	PointerUp,
 	PointerDown
 }
-#[derive(Component)]
-pub enum ButtonClickCallback<I: 'static, O: 'static, M, S: IntoSystem<I, O, M> + 'static> {
-	Unregistered(S),
-	SystemId(SystemId)
-}
+#[derive(Component, Debug)]
+pub struct ButtonClickCallback(SystemId);
 
 fn update_text_btn_interaction(mut commands: Commands, mut query: Query<(&Interaction, &mut ClickMode, &ButtonClickCallback), (Changed<Interaction>, With<TextButton>)>) {
-	for (interaction, click_mode, button_click_callback) in query.iter_mut() {
+	for (interaction, mut click_mode, button_click_callback) in query.iter_mut() {
 		match interaction {
 			Interaction::Pressed => {
 				*click_mode = ClickMode::PointerDown;
@@ -43,7 +40,7 @@ pub struct TextButton;
 
 impl TextButton {
     fn new(cb_system_id: SystemId) -> impl Bundle {
-        (Name::new("Button"), ButtonBundle {
+        (TextButton, Name::new("Text Button"), ButtonBundle {
 	        background_color: GRAY_300.into(),
 	        ..default()
         }, ClickMode::PointerUp, ButtonClickCallback(cb_system_id))
