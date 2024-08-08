@@ -10,6 +10,7 @@ use sickle_ui::SickleUiPlugin;
 use bevy_inspector_egui::prelude::*;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use crate::app_state::AppState;
+use crate::assets::{load_assets};
 use crate::game::game_plugin;
 use crate::game::game_state::GameState;
 use crate::scenes::loading_screen::loading_screen_plugin;
@@ -32,5 +33,6 @@ fn main() {
 			main_menu_plugin,
 			game_plugin
 		))
+		.add_systems(Startup, load_assets)
 		.run();
 }
